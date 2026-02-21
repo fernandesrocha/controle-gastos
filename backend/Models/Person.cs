@@ -8,7 +8,7 @@ public class Person
 
     [Required]
     [MaxLength(200)]
-    public string Name { get; set; } // Nome (max 200 caracteres)
+    public string Name { get; set; } = null!; // Nome (max 200 caracteres)
 
     [Required]
     [Range(0, int.MaxValue)]

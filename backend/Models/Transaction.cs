@@ -9,7 +9,7 @@ public class Transaction
 
     [Required]
     [MaxLength(400)]
-    public string Description { get; set; } // Descrição (max 400 caracteres)
+    public string Description { get; set; } = null!; // Descrição (max 400 caracteres)
 
     [Required]
     [Range(0.01, double.MaxValue)] // Valor positivo > 0
@@ -20,9 +20,9 @@ public class Transaction
 
     [Required]
     public int CategoryId { get; set; } // ID da categoria
-    public virtual Category Category { get; set; }
+    public virtual Category Category { get; set; } = null!;
 
     [Required]
     public int PersonId { get; set; } // ID da pessoa
-    public virtual Person Person { get; set; }
+    public virtual Person Person { get; set; } = null!;
 }

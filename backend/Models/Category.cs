@@ -10,7 +10,7 @@ public class Category
 
     [Required]
     [MaxLength(400)]
-    public string Description { get; set; } // Descrição (max 400 caracteres)
+    public string Description { get; set; } = null!; // Descrição (max 400 caracteres)
 
     [Required]
     public Purpose Purpose { get; set; } // Finalidade: despesa/receita/ambas
