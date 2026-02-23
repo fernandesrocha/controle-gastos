@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -35,17 +32,17 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TransactionDto>> PostTransaction(TransactionDto dto)
     {
-        // Valida pessoa existe e idade.
+        // Valida se pessoa existe e verifica idade.
         var person = await _context.Persons.FindAsync(dto.PersonId);
         if (person == null) return BadRequest("Pessoa não encontrada.");
         if (person.Age < 18 && dto.Type == TransactionType.Income) return BadRequest("Menores de 18 anos só podem registrar despesas.");
 
-        // Valida categoria existe e finalidade compatível.
+        // Valida se categoria existe e se finalidade é compatível.
         var category = await _context.Categories.FindAsync(dto.CategoryId);
         if (category == null) return BadRequest("Categoria não encontrada.");
         if (dto.Type == TransactionType.Expense && category.Purpose == Purpose.Income) return BadRequest("Categoria só para receitas.");
         if (dto.Type == TransactionType.Income && category.Purpose == Purpose.Expense) return BadRequest("Categoria só para despesas.");
-        // 'Both' sempre permite.
+        // Tipo 'Both' sempre permite.
 
         var transaction = new Transaction 
         { 

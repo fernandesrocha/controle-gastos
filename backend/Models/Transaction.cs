@@ -7,22 +7,22 @@ public class Transaction
     [Key]
     public int Id { get; set; } // Identificador único auto-gerado
 
-    [Required]
-    [MaxLength(400)]
+    [Required(ErrorMessage = "A descrição é obrigatória")]
+    [MaxLength(400, ErrorMessage = "A descrição deve ter no máximo 400 caracteres")]
     public string Description { get; set; } = null!; // Descrição (max 400 caracteres)
 
-    [Required]
-    [Range(0.01, double.MaxValue)] // Valor positivo > 0
+    [Required(ErrorMessage = "O valor é obrigatório")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "O valor deve ser positivo e maior que zero")] // Valor positivo > 0
     public decimal Value { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O tipo é obrigatório")]
     public TransactionType Type { get; set; } // Tipo: despesa/receita
 
-    [Required]
+    [Required(ErrorMessage = "A categoria é obrigatória")]
     public int CategoryId { get; set; } // ID da categoria
     public virtual Category Category { get; set; } = null!;
 
-    [Required]
+    [Required(ErrorMessage = "A pessoa é obrigatória")]
     public int PersonId { get; set; } // ID da pessoa
     public virtual Person Person { get; set; } = null!;
 }
