@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-public enum Purpose { Expense, Income, Both } // Enum para finalidade
+// Model para cadastro de categorias 
+public enum Purpose { Despesa, Receita, Ambos } // Enum para finalidade
 
 public class Category
 {

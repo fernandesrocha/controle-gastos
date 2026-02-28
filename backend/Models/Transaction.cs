@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public enum TransactionType { Expense, Income } // Enum para tipo
+public enum TransactionType { Despesa, Receita } // Enum para tipo
 
 public class Transaction
 {
