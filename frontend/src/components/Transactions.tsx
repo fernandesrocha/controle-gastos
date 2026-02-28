@@ -71,7 +71,7 @@ const Transactions: React.FC = () => {
       await axios.post('http://localhost:5054/api/transactions', { description, value, type, categoryId, personId });
       fetchTransactions();
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao criar transação:', error);
       alert('Falha ao criar transação. Verifique os campos ou regras no back-end (ex.: idade para receitas).');
     }

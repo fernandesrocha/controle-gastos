@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+
 import Persons from './components/Persons';
 import Categories from './components/Categories';
 import Transactions from './components/Transactions';
 import PersonReports from './components/PersonReports';
 import CategoryReports from './components/CategoryReports';
 
-import './index.css';
+import './App.css'; // Import CSS
 
-// App principal com rotas para cada funcionalidade.
 const App: React.FC = () => {
   return (
     <Router>
@@ -24,7 +24,7 @@ const App: React.FC = () => {
         </nav>
 
         <Routes>
-          {/* Rota padrão: redireciona automaticamente para Pessoas */}
+          {/* Rota padrão: redireciona para Pessoas */}
           <Route path="/" element={<Navigate to="/persons" replace />} />
 
           <Route path="/persons" element={<Persons />} />

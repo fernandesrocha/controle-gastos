@@ -25,10 +25,8 @@ const Persons: React.FC = () => {
 
   const handleSubmit = async () => {
     if (editingId) {
-      // Edição.
       await axios.put(`http://localhost:5054/api/persons/${editingId}`, { id: editingId, name, age });
     } else {
-      // Criação.
       await axios.post('http://localhost:5054/api/persons', { name, age });
     }
     fetchPersons();
@@ -61,7 +59,7 @@ const Persons: React.FC = () => {
       <ul>
         {persons.map(p => (
           <li key={p.id}>
-            {p.name} ({p.age}) 
+            {p.name} ({p.age})
             <button onClick={() => handleEdit(p)}>Editar</button>
             <button onClick={() => handleDelete(p.id)}>Deletar</button>
           </li>

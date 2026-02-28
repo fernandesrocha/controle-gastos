@@ -1,4 +1,3 @@
-// Categories.tsx ajustado para depuração
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,6 +9,7 @@ interface Category {
   purpose: Purpose;
 }
 
+// Componente para criação e listagem de categorias
 const Categories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [description, setDescription] = useState('');
@@ -35,15 +35,14 @@ const Categories: React.FC = () => {
       return;
     }
     try {
-      // Enviar com nomes em maiúscula para match exato com DTO
-      await axios.post('http://localhost:5054/api/categories', { Description: description, Purpose: purpose });
+      await axios.post('http://localhost:5054/api/categories', { description, purpose });
       fetchCategories();
       setDescription('');
       setPurpose(Purpose.Both);
     } catch (error: any) {
       console.error('Erro ao criar categoria:', error);
-      const errorMsg = error.response?.data?.errors ? JSON.stringify(error.response.data.errors) : error.message;
-      alert(`Falha ao criar categoria: ${errorMsg}`);
+      const errorMsg = error.response?.data || error.message || 'Falha ao criar categoria.';
+      alert(errorMsg);
     }
   };
 
