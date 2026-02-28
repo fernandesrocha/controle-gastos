@@ -12,6 +12,15 @@ builder.Services.AddDbContext<ExpensesDbContext>(options =>
 // Adiciona suporte a controllers
 builder.Services.AddControllers();
 
+builder.Services.AddControllers()
+
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.Converters.Add(
+        new System.Text.Json.Serialization.JsonStringEnumConverter());
+});
+
 // Configura CORS para permitir chamadas do front-end
 builder.Services.AddCors(options =>
 {

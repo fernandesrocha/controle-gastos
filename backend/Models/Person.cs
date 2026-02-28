@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+// Model para cadastro de pessoas, com deleção em cascata para transações associadas.
 public class Person
 {
     [Key]
