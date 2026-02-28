@@ -33,24 +33,48 @@ const Transactions: React.FC = () => {
   }, []);
 
   const fetchTransactions = async () => {
-    const response = await axios.get<Transaction[]>('http://localhost:5000/api/transactions');
-    setTransactions(response.data);
+    try {
+      const response = await axios.get<Transaction[]>('http://localhost:5054/api/transactions');
+      setTransactions(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar transações:', error);
+      alert('Falha ao carregar transações.');
+    }
   };
 
   const fetchPersons = async () => {
-    const response = await axios.get<Person[]>('http://localhost:5000/api/persons');
-    setPersons(response.data);
+    try {
+      const response = await axios.get<Person[]>('http://localhost:5054/api/persons');
+      setPersons(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar pessoas:', error);
+      alert('Falha ao carregar pessoas.');
+    }
   };
 
   const fetchCategories = async () => {
-    const response = await axios.get<Category[]>('http://localhost:5000/api/categories');
-    setCategories(response.data);
+    try {
+      const response = await axios.get<Category[]>('http://localhost:5054/api/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar categorias:', error);
+      alert('Falha ao carregar categorias.');
+    }
   };
 
   const handleSubmit = async () => {
-    await axios.post('http://localhost:5000/api/transactions', { description, value, type, categoryId, personId });
-    fetchTransactions();
-    resetForm();
+    if (categoryId === 0 || personId === 0) {
+      alert('Selecione uma categoria e pessoa válidas.');
+      return;
+    }
+    try {
+      await axios.post('http://localhost:5054/api/transactions', { description, value, type, categoryId, personId });
+      fetchTransactions();
+      resetForm();
+    } catch (error) {
+      console.error('Erro ao criar transação:', error);
+      alert('Falha ao criar transação. Verifique os campos ou regras no back-end (ex.: idade para receitas).');
+    }
   };
 
   const resetForm = () => {
@@ -79,13 +103,17 @@ const Transactions: React.FC = () => {
         {persons.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
       </select>
       <button onClick={handleSubmit}>Criar</button>
-      <ul>
-        {transactions.map(t => (
-          <li key={t.id}>
-            {t.description} - {t.value} ({t.type}) - Cat: {t.categoryId} - Pessoa: {t.personId}
-          </li>
-        ))}
-      </ul>
+      {transactions.length === 0 ? (
+        <p>Nenhuma transação cadastrada. Crie uma para começar.</p>
+      ) : (
+        <ul>
+          {transactions.map(t => (
+            <li key={t.id}>
+              {t.description} - {t.value} ({t.type}) - Cat: {t.categoryId} - Pessoa: {t.personId}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

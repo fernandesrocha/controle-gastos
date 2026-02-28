@@ -19,17 +19,17 @@ const Persons: React.FC = () => {
   }, []);
 
   const fetchPersons = async () => {
-    const response = await axios.get<Person[]>('http://localhost:5000/api/persons');
+    const response = await axios.get<Person[]>('http://localhost:5054/api/persons');
     setPersons(response.data);
   };
 
   const handleSubmit = async () => {
     if (editingId) {
       // Edição.
-      await axios.put(`http://localhost:5000/api/persons/${editingId}`, { id: editingId, name, age });
+      await axios.put(`http://localhost:5054/api/persons/${editingId}`, { id: editingId, name, age });
     } else {
       // Criação.
-      await axios.post('http://localhost:5000/api/persons', { name, age });
+      await axios.post('http://localhost:5054/api/persons', { name, age });
     }
     fetchPersons();
     resetForm();
@@ -42,7 +42,7 @@ const Persons: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await axios.delete(`http://localhost:5000/api/persons/${id}`);
+    await axios.delete(`http://localhost:5054/api/persons/${id}`);
     fetchPersons();
   };
 

@@ -18,46 +18,60 @@ interface GeneralTotals {
 const PersonReports: React.FC = () => {
   const [personTotals, setPersonTotals] = useState<PersonTotals[]>([]);
   const [general, setGeneral] = useState<GeneralTotals>({ totalIncome: 0, totalExpense: 0, balance: 0 });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchReports();
   }, []);
 
   const fetchReports = async () => {
-    const response = await axios.get<{ Item1: PersonTotals[], Item2: GeneralTotals }>('http://localhost:5000/api/reports/person-totals');
-    setPersonTotals(response.data.Item1);
-    setGeneral(response.data.Item2);
+    try {
+      const response = await axios.get<{ items: PersonTotals[], general: GeneralTotals }>('http://localhost:5054/api/reports/person-totals'); // AJUSTADO: { items, general }
+      console.log('Response completa do relatório por pessoa:', response.data); // Depuração
+      setPersonTotals(response.data.items || []);
+      setGeneral(response.data.general || { totalIncome: 0, totalExpense: 0, balance: 0 });
+      setError(null);
+    } catch (error: any) {
+      console.error('Erro ao buscar relatório por pessoa:', error);
+      setError(error.response?.data || 'Falha ao carregar relatório.');
+    }
   };
 
   return (
     <div>
       <h2>Relatório por Pessoa</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Receitas</th>
-            <th>Despesas</th>
-            <th>Saldo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {personTotals.map(pt => (
-            <tr key={pt.person.id}>
-              <td>{pt.person.name}</td>
-              <td>{pt.totalIncome}</td>
-              <td>{pt.totalExpense}</td>
-              <td>{pt.balance}</td>
+      {error ? (
+        <p>{error}</p>
+      ) : personTotals.length === 0 ? (
+        <p>Nenhum dado disponível. Adicione transações para ver totais.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Receitas</th>
+              <th>Despesas</th>
+              <th>Saldo</th>
             </tr>
-          ))}
-          <tr>
-            <td><strong>Total Geral</strong></td>
-            <td>{general.totalIncome}</td>
-            <td>{general.totalExpense}</td>
-            <td>{general.balance}</td>
-          </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {personTotals.map(pt => (
+              <tr key={pt.person.id}>
+                <td>{pt.person.name}</td>
+                <td>{pt.totalIncome.toFixed(2)}</td>
+                <td>{pt.totalExpense.toFixed(2)}</td>
+                <td>{pt.balance.toFixed(2)}</td>
+              </tr>
+            ))}
+            <tr>
+              <td><strong>Total Geral</strong></td>
+              <td>{general.totalIncome.toFixed(2)}</td>
+              <td>{general.totalExpense.toFixed(2)}</td>
+              <td>{general.balance.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
